@@ -1,4 +1,4 @@
-FROM arm32v6/ruby:2.7.1-alpine
+zFROM arm32v7/ruby:2.6-alpine
 
 MAINTAINER Matthew Rayner <m@rayner.io>
 
@@ -16,6 +16,7 @@ WORKDIR /home/meetingdisplay
 
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
+RUN gem update bundler
 RUN bundle config set without 'test'
 RUN bundle install --retry 10 --jobs 4
 
