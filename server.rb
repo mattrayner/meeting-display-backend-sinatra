@@ -2,14 +2,11 @@
 require 'sinatra/base'
 require 'sinatra/json'
 require 'sinatra/cross_origin'
-require 'icalendar'
 require 'icalendar/recurrence'
 require 'icalendar/tzinfo'
 require 'json'
 require 'net/http'
 require 'date'
-require 'time'
-require 'active_support/time_with_zone'
 
 TIMEZONE = ENV['TIMEZONE'] || ENV['TZ'] || 'Europe/London'
 # ENV['TZ'] = TIMEZONE
