@@ -21,4 +21,3 @@ push-arm: build-arm push
 
 push:
 	docker push mattrayner/meeting-display:latest
-	docker push
