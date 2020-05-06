@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.e4961339.chunk.css",
+    "main.css": "/static/css/main.5fa67672.chunk.css",
     "main.js": "/static/js/main.832e267b.chunk.js",
     "main.js.map": "/static/js/main.832e267b.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.3307478e.js",
@@ -8,17 +8,17 @@
     "static/js/2.534589db.chunk.js": "/static/js/2.534589db.chunk.js",
     "static/js/2.534589db.chunk.js.map": "/static/js/2.534589db.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.1c31106cf0dee89553f9bcecc999e342.js": "/precache-manifest.1c31106cf0dee89553f9bcecc999e342.js",
+    "precache-manifest.4b5383c0e4ed60c867aedafd011bc6ff.js": "/precache-manifest.4b5383c0e4ed60c867aedafd011bc6ff.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.e4961339.chunk.css.map": "/static/css/main.e4961339.chunk.css.map",
+    "static/css/main.5fa67672.chunk.css.map": "/static/css/main.5fa67672.chunk.css.map",
     "static/js/2.534589db.chunk.js.LICENSE.txt": "/static/js/2.534589db.chunk.js.LICENSE.txt",
-    "static/media/error-cross.370ba9d8.svg": "/static/media/error-cross.370ba9d8.svg",
-    "static/media/MeetingDisplay.css": "/static/media/meerkat-background.d2644131.jpeg"
+    "static/media/MeetingDisplay.css": "/static/media/meerkat-background.d2644131.jpeg",
+    "static/media/error-cross.370ba9d8.svg": "/static/media/error-cross.370ba9d8.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.3307478e.js",
     "static/js/2.534589db.chunk.js",
-    "static/css/main.e4961339.chunk.css",
+    "static/css/main.5fa67672.chunk.css",
     "static/js/main.832e267b.chunk.js"
   ]
 }
