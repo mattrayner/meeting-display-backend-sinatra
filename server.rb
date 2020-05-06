@@ -44,9 +44,10 @@ class MeetingDisplay < Sinatra::Base
     next_month = today.next_month
     next_month = DateTime.new(next_month.year, next_month.month, next_month.day, 23, 59, 59)
 
-    events = cal.events.map do |event|
+    events = cal.events.select{ |event| event.transp == 'OPAQUE' }.map do |event|
       event.occurrences_between(now, next_month).map do |event_occurrence|
         {
+            uid: event.uid,
             summary: event.summary,
             start: event_occurrence.start_time.in_time_zone(TIMEZONE),
             end: event_occurrence.end_time.in_time_zone(TIMEZONE)
@@ -55,8 +56,11 @@ class MeetingDisplay < Sinatra::Base
     end
 
     now = DateTime.now
-    sorted_filtered_events = events.flatten.select { |event| event[:end] > now  }
-                                 .sort_by { |event| event[:end] }
+    sorted_filtered_events = events
+        .flatten
+        .select { |event| event[:end] > now  } # Only include events that end after now
+        .uniq { |event| [event[:uid], event[:start]] } # Remove duplicates that can exist in some implementations of repeating
+        .sort_by{ |event| [event[:start], event[:end]] } # Sort them
 
     response_object = {
         events: sorted_filtered_events,
@@ -75,15 +79,3 @@ class MeetingDisplay < Sinatra::Base
 
   run! if app_file == $0
 end
-#
-# class Time
-#   def to_datetime
-#     # Convert seconds + microseconds into a fractional number of seconds
-#     seconds = sec + Rational(usec, 10**6)
-#
-#     # Convert a UTC offset measured in minutes to one measured in a
-#     # fraction of a day.
-#     offset = Rational(utc_offset, 60 * 60 * 24)
-#     DateTime.new(year, month, day, hour, min, seconds, offset)
-#   end
-# end
