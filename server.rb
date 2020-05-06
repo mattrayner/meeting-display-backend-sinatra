@@ -70,6 +70,15 @@ class MeetingDisplay < Sinatra::Base
     json response_object
   end
 
+  get('/brightness-up') do
+    output = `sh brightnessup.sh`
+
+    output_number = new Integer(output)
+
+    response_object = { output: output }
+    json response_object
+  end
+
   options "*" do
     response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
