@@ -34,7 +34,7 @@ docker-compose -f ~/docker-compose.meeting-display.yml up -d
 export DISPLAY=:0
 
 # Hide the mouse from the display
-unclutter &
+#unclutter &
 
 # If Chrome crashes (usually due to rebooting), clear the crash flag so we don't have the annoying warning bar
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/pi/.config/chromium/Default/Preferences
@@ -49,13 +49,12 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/pi/.config/chromium
 # Otherwise, the ctrl+Tab is designed to switch tabs in Chrome
 # xdotool keydown ctrl+Tab; xdotool keyup ctrl+Tab;
 # #
-while (true)
- do
-  xdotool keydown ctrl; xdotool keyup ctrl;
-  sleep 15
-done
+#while (true)
+# do
+#  xdotool keydown ctrl; xdotool keyup ctrl;
+#  sleep 15
+#done
 EOT
-
 chmod +x ~/kiosk.sh
 
 echo "Configuring docker-compose"
@@ -94,23 +93,36 @@ cat <<EOT > ~/display_off.sh
 echo "1" > /sys/class/backlight/rpi_backlight/bl_power
 echo "0" > /sys/class/backlight/rpi_backlight/brightness
 EOT
+chmod +x ~/display_off.sh
 
 cat <<EOT > ~/display_on_dim.sh
 #!/bin/bash
 echo "0" > /sys/class/backlight/rpi_backlight/bl_power
 echo "62" > /sys/class/backlight/rpi_backlight/brightness
 EOT
+chmod +x ~/display_on_dim.sh
 
 cat <<EOT > ~/display_on.sh
 #!/bin/bash
 echo "0" > /sys/class/backlight/rpi_backlight/bl_power
 echo "125" > /sys/class/backlight/rpi_backlight/brightness
 EOT
+chmod +x ~/display_on.sh
+
+
+cat <<EOT > ~/update.sh
+#!/bin/bash
+docker pull mattrayner/meeting-display:latest
+sudo killall chromium-browse
+/home/pi/kiosk.sh
+EOT
+chmod +x ~/update.sh
 
 cat <<EOT > ~/meeting_display_auto_brightness
-0 7,20 * * 0-5 root /home/pi/display_on_dim.sh >/dev/null 2>&1
-30 7 * * 0-5 root /bin/sh /home/pi/display_on.sh
-* 21 * * * root /bin/sh /home/pi/display_off.sh
+30 1 * * 0-5 pi /home/pi/update.sh >/dev/null 2>&1
+0 7,20 * * 0-5 pi /home/pi/display_on_dim.sh >/dev/null 2>&1
+30 7 * * 0-5 pi /bin/sh /home/pi/display_on.sh
+* 21 * * * pi /bin/sh /home/pi/display_off.sh
 EOT
 
 if [ -f "/etc/cron.d/meeting_display_auto_brightness" ]; then
