@@ -34,7 +34,7 @@ docker-compose -f ~/docker-compose.meeting-display.yml up -d
 export DISPLAY=:0
 
 # Hide the mouse from the display
-#unclutter &
+unclutter &
 
 # If Chrome crashes (usually due to rebooting), clear the crash flag so we don't have the annoying warning bar
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/pi/.config/chromium/Default/Preferences
@@ -49,11 +49,11 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/pi/.config/chromium
 # Otherwise, the ctrl+Tab is designed to switch tabs in Chrome
 # xdotool keydown ctrl+Tab; xdotool keyup ctrl+Tab;
 # #
-#while (true)
-# do
-#  xdotool keydown ctrl; xdotool keyup ctrl;
-#  sleep 15
-#done
+while (true)
+ do
+  xdotool keydown ctrl; xdotool keyup ctrl;
+  sleep 15
+done
 EOT
 chmod +x ~/kiosk.sh
 
@@ -78,6 +78,8 @@ services:
 EOT
 
 echo "Set permissions to allow the display to change the brightness and backlight"
+sudo apt-get install -y unclutter xdotool
+
 sudo chmod 777 /sys/class/backlight/rpi_backlight/brightness
 sudo chmod 777 /sys/class/backlight/rpi_backlight/bl_power
 
@@ -112,8 +114,11 @@ chmod +x ~/display_on.sh
 
 cat <<EOT > ~/update.sh
 #!/bin/bash
+sudo apt-get update -y
+sudo apt-get upgrade -y
 docker pull mattrayner/meeting-display:latest
 sudo killall chromium-browse
+docker-compose -f ~/docker-compose.meeting-display.yml rm
 /home/pi/kiosk.sh
 EOT
 chmod +x ~/update.sh

@@ -35,7 +35,7 @@ class Screen
     end
 
     def get_backlight_status
-      file = File.open("brightness")
+      file = File.open("bl_power")
       file_data = file.read
 
       Integer(file_data) == 0 ? :on : :off
