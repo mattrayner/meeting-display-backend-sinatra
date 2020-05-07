@@ -48,7 +48,7 @@ class Screen
     end
 
     def backlight_off
-      return if Screen.get_backlight_status == :on
+      return if Screen.get_backlight_status == :off
 
       File.open("bl_power", "w") { |f| f.write "1" }
     end
