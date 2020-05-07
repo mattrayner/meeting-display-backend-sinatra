@@ -9,8 +9,51 @@ require 'net/http'
 require 'date'
 
 TIMEZONE = ENV['TIMEZONE'] || ENV['TZ'] || 'Europe/London'
-# ENV['TZ'] = TIMEZONE
 ICAL_URL = ENV['ICAL_URL']
+BRIGHTNESS_STEP = 25
+BRIGHTNESS_MIN = BRIGHTNESS_STEP
+BRIGHTNESS_MAX = 250
+BRIGHTNESS_LOW = (BRIGHTNESS_MAX / 2).round
+BRIGHTNESS_TWEEN = 0.5
+BRIGHTNESS_TWEEN_LONG = BRIGHTNESS_TWEEN * 3
+
+class Screen
+  class << self
+    def get_brightness
+      file = File.open("brightness")
+      file_data = file.read
+
+      Integer(file_data)
+    end
+
+    def update_brightness(new_brightness)
+      File.open("brightness", "w") { |f| f.write "#{new_brightness}" }
+    end
+
+    def brightness_percentage(brightness = Screen.get_brightness)
+      Integer((brightness / BRIGHTNESS_MAX.to_f) * 100)
+    end
+
+    def get_backlight_status
+      file = File.open("brightness")
+      file_data = file.read
+
+      Integer(file_data) == 0 ? :on : :off
+    end
+
+    def backlight_on
+      return if Screen.get_backlight_status == :on
+
+      File.open("bl_power", "w") { |f| f.write "0" }
+    end
+
+    def backlight_off
+      return if Screen.get_backlight_status == :on
+
+      File.open("bl_power", "w") { |f| f.write "1" }
+    end
+  end
+end
 
 class MeetingDisplay < Sinatra::Base
   raise StandardError, "No iCal URL set" unless ICAL_URL
@@ -70,12 +113,86 @@ class MeetingDisplay < Sinatra::Base
     json response_object
   end
 
-  get('/brightness-up') do
-    output = `sh brightnessup.sh`
+  get('/brightness') do
+    percentage = Screen.brightness_percentage(Screen.get_brightness)
+    backlight_on = Screen.get_backlight_status == :on
 
-    output_number = new Integer(output)
+    response_object = { brightness: percentage, backlight_on: backlight_on }
+    json response_object
+  end
 
-    response_object = { output: output }
+  get('/brightness/up') do
+    current_brightness = Screen.get_brightness
+    new_brightness = current_brightness + BRIGHTNESS_STEP
+    new_brightness = BRIGHTNESS_MAX if new_brightness > BRIGHTNESS_MAX
+
+    Screen.backlight_on
+    Screen.update_brightness(new_brightness)
+    percentage = Screen.brightness_percentage(Screen.get_brightness)
+    backlight_on = Screen.get_backlight_status == :on
+
+    response_object = { brightness: percentage, backlight_on: backlight_on }
+    json response_object
+  end
+
+  get('/brightness/down') do
+    current_brightness = Screen.get_brightness
+    new_brightness = current_brightness - BRIGHTNESS_STEP
+    if new_brightness < BRIGHTNESS_MIN
+      new_brightness = BRIGHTNESS_MIN
+      Screen.backlight_off
+    end
+
+    Screen.update_brightness(new_brightness)
+    percentage = Screen.brightness_percentage(new_brightness)
+
+    backlight_on = Screen.get_backlight_status == :on
+
+    response_object = { brightness: percentage, backlight_on: backlight_on }
+    json response_object
+  end
+
+  get('/brightness/ping') do
+    backlight_status = Screen.get_backlight_status
+    backlight_on = backlight_status == :on
+
+    brightness = Screen.get_brightness
+
+    if backlight_on
+      response_object = { backlight_on: backlight_on == :on, brightness: brightness }
+      json response_object
+    else
+      Screen.backlight_on
+      Screen.update_brightness(BRIGHTNESS_LOW) if brightness < BRIGHTNESS_LOW
+
+      backlight_on = Screen.get_backlight_status == :on
+      brightness = Screen.get_brightness
+
+      response_object = { backlight_on: backlight_on, brightness: brightness }
+      json response_object
+    end
+  end
+
+  get('/brightness/off') do
+    frames = 30
+    target_brightness = 10
+    step = (Screen.get_brightness - target_brightness).round / (frames * BRIGHTNESS_TWEEN_LONG).round
+    step = 1 if step < 1
+
+    while Screen.get_brightness > target_brightness do
+      new_brightness = (Screen.get_brightness - step).round
+      new_brightness = target_brightness if new_brightness < target_brightness
+
+      Screen.update_brightness(new_brightness)
+
+      Kernel.sleep(1.0/frames)
+    end
+    Screen.backlight_off
+
+    backlight_on = Screen.get_backlight_status == :on
+    brightness = Screen.get_brightness
+
+    response_object = { backlight_on: backlight_on, brightness: brightness }
     json response_object
   end
 
