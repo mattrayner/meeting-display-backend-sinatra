@@ -154,9 +154,10 @@ class MeetingDisplay < Sinatra::Base
 
   get('/brightness/ping') do
     backlight_on = Screen.get_backlight_status == :on
+    brightness = Screen.get_brightness
 
     if backlight_on
-      percentage = Screen.brightness_percentage(Screen.get_brightness)
+      percentage = Screen.brightness_percentage(brightness)
       response_object = { backlight_on: backlight_on, brightness: percentage }
       json response_object
     else
