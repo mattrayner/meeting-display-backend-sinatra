@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5fff62c2079760f74db040f07a98cbee",
+    "revision": "0b45abc2107bde2a3d9a9015008d4ad8",
     "url": "/index.html"
   },
   {
-    "revision": "77558fd9b4d32d823a48",
-    "url": "/static/css/main.e8fe1ebe.chunk.css"
+    "revision": "0b8c475711733c6ce07e",
+    "url": "/static/css/main.df0ffe7f.chunk.css"
   },
   {
     "revision": "ac4b3cdec30f1485e8fa",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/js/2.2b50ed42.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "77558fd9b4d32d823a48",
-    "url": "/static/js/main.f2287b21.chunk.js"
+    "revision": "0b8c475711733c6ce07e",
+    "url": "/static/js/main.687da221.chunk.js"
   },
   {
     "revision": "5531d0ae0df9bf177e25",
@@ -36,12 +36,32 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/error-cross.370ba9d8.svg"
   },
   {
+    "revision": "84b6431dff8319842aa070a53f57296c",
+    "url": "/static/media/hourglass-1.84b6431d.svg"
+  },
+  {
+    "revision": "9d350c991e4a5a282f0c8f8670c15b76",
+    "url": "/static/media/hourglass-2.9d350c99.svg"
+  },
+  {
+    "revision": "6c3bd9e8b99c34411b8158b000d968b6",
+    "url": "/static/media/hourglass-3.6c3bd9e8.svg"
+  },
+  {
+    "revision": "08d4b8f263436b4a8d030b6e52f7a019",
+    "url": "/static/media/hourglass.08d4b8f2.svg"
+  },
+  {
     "revision": "d264413148eba57bcd9ed352223a4c2c",
     "url": "/static/media/meerkat-background.d2644131.jpeg"
   },
   {
     "revision": "05a6d59fdc0d1acec05edd0cc65ab8a3",
     "url": "/static/media/minus.05a6d59f.svg"
+  },
+  {
+    "revision": "16c7a69349eb4b74badd05ff0e6b2e8d",
+    "url": "/static/media/moon.16c7a693.svg"
   },
   {
     "revision": "565f29d883b034fa750cb7cefe0a6638",

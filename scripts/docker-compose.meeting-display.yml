@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  app:
+    image: mattrayner/meeting-display:latest
+    ports:
+      - '4567:5000'
+    volumes:
+      - /sys/class/backlight/rpi_backlight/brightness:/home/meetingdisplay/brightness
+      - /sys/class/backlight/rpi_backlight/bl_power:/home/meetingdisplay/bl_power
+    environment:
+      ICAL_URL:
