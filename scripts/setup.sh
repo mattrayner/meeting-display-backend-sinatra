@@ -1,7 +1,7 @@
 mkdir -p ~/meeting-display
 
 echo "Setting up display configuration"
-sudo cat <<EOT >> /boot/config.txt
+sudo tee -a /boot/config.txt > /dev/null <<EOT
 lcd_rotate=2
 framebuffer_width=800
 framebuffer_height=444
