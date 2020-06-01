@@ -30,7 +30,7 @@ Exec=/home/pi/meeting-display/kiosk.sh
 X-GNOME-Autostart-enabled=true
 EOT
 
-curl https://matt.rayner.io/meeting-display/kiosk.sh --output ~/meeting-display/kiosk.sh
+curl  https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/kiosk.sh --output ~/meeting-display/kiosk.sh
 chmod +x ~/kiosk.sh
 
 echo "Configuring docker-compose"
@@ -40,7 +40,7 @@ echo "export ICAL_URL=$ical_url" >> ~/.bashrc
 source ~/.bashrc
 
 # Add the brightness and bl_power files into the docker file so we can manipulate the touch screen brightness.
-curl https://matt.rayner.io/meeting-display/docker-compose.meeting-display.yml --output ~/meeting-display/docker-compose.meeting-display.yml
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/docker-compose.meeting-display.yml --output ~/meeting-display/docker-compose.meeting-display.yml
 
 echo "Set permissions to allow the display to change the brightness and backlight"
 sudo chmod 777 /sys/class/backlight/rpi_backlight/brightness
@@ -61,19 +61,19 @@ EOT
 mkdir -p ~/meeting-display/cron/
 
 # Allow us to turn the display off on a schedule
-curl https://matt.rayner.io/meeting-display/cron/display_off.sh --output ~/meeting-display/cron/display_off.sh
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_off.sh --output ~/meeting-display/cron/display_off.sh
 chmod +x ~/meeting-display/cron/display_off.sh
 
 # Allow us to dim the display on a schedule
-curl https://matt.rayner.io/meeting-display/cron/display_on_dim.sh --output ~/meeting-display/cron/display_on_dim.sh
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_on_dim.sh --output ~/meeting-display/cron/display_on_dim.sh
 chmod +x ~/meeting-display/cron/display_on_dim.sh
 
 # Allow us to turn the display on on a schedule
-curl https://matt.rayner.io/meeting-display/cron/display_on.sh --output ~/meeting-display/cron/display_on.sh
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_on.sh --output ~/meeting-display/cron/display_on.sh
 chmod +x ~/meeting-display/cron/display_on.sh
 
 # Allow us to automatically update the display on a schedule
-curl https://matt.rayner.io/meeting-display/cron/update.sh --output ~/meeting-display/cron/update.sh
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/update.sh --output ~/meeting-display/cron/update.sh
 chmod +x ~/meeting-display/cron/update.sh
 
 
