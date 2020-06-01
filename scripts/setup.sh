@@ -80,6 +80,7 @@ chmod +x ~/meeting-display/cron/update.sh
 mkdir -p ~/meeting-display/logs
 
 # Add CRON entries to do the above
+tourch /var/spool/cron/crontabs/pi
 ( crontab -l | grep -v -F "/home/pi/meeting-display/cron/update.sh" ; echo "30 1 * * 0-5 /home/pi/meeting-display/cron/update.sh > /home/pi/meeting-display/logs/cron.log 2>&1" ) | crontab -
 ( crontab -l | grep -v -F "/home/pi/display_on_dim.sh" ; echo "0 7,20 * * 0-5 /home/pi/display_on_dim.sh > /home/pi/cron.log 2>&1" ) | crontab -
 ( crontab -l | grep -v -F "/home/pi/display_on.sh" ; echo "30 7 * * 0-5 /bin/sh /home/pi/display_on.sh > /home/pi/cron.log 2>&1" ) | crontab -
