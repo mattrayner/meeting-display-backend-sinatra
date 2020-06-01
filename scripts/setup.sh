@@ -12,6 +12,11 @@ echo "Get the latest packages and update"
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
+echo "Paste in your .ical URL, then press enter:"
+read ical_url
+echo "export ICAL_URL=$ical_url" >> ~/.bashrc
+source ~/.bashrc
+
 echo "Install Docker and Docker Compose"
 curl -sSL https://get.docker.com | sh
 sudo usermod -aG docker pi
@@ -34,11 +39,6 @@ curl  https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinat
 chmod +x ~/kiosk.sh
 
 echo "Configuring docker-compose"
-echo "Paste in your .ical URL, then press enter:"
-read ical_url
-echo "export ICAL_URL=$ical_url" >> ~/.bashrc
-source ~/.bashrc
-
 # Add the brightness and bl_power files into the docker file so we can manipulate the touch screen brightness.
 curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/docker-compose.meeting-display.yml --output ~/meeting-display/docker-compose.meeting-display.yml
 
@@ -80,7 +80,7 @@ chmod +x ~/meeting-display/cron/update.sh
 mkdir -p ~/meeting-display/logs
 
 # Add CRON entries to do the above
-tourch /var/spool/cron/crontabs/pi
+touch /var/spool/cron/crontabs/pi
 ( crontab -l | grep -v -F "/home/pi/meeting-display/cron/update.sh" ; echo "30 1 * * 0-5 /home/pi/meeting-display/cron/update.sh > /home/pi/meeting-display/logs/cron.log 2>&1" ) | crontab -
 ( crontab -l | grep -v -F "/home/pi/display_on_dim.sh" ; echo "0 7,20 * * 0-5 /home/pi/display_on_dim.sh > /home/pi/cron.log 2>&1" ) | crontab -
 ( crontab -l | grep -v -F "/home/pi/display_on.sh" ; echo "30 7 * * 0-5 /bin/sh /home/pi/display_on.sh > /home/pi/cron.log 2>&1" ) | crontab -
