@@ -1,3 +1,4 @@
+#!/bin/bash
 mkdir -p ~/meeting-display
 
 echo "Setting up display configuration"
