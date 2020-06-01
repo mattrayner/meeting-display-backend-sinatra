@@ -1,0 +1,12 @@
+version: '2'
+services:
+  app:
+    build: .
+    volumes:
+      - .:/home/meetingdisplay
+    ports:
+      - '4567:5000'
+    environment:
+      APP_ENV: 'development'
+      ICAL_URL:
+      TIMEZONE: 'Europe/London'
