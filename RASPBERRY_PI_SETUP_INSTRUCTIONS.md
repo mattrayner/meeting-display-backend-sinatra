@@ -15,7 +15,7 @@ The latest version of Raspbian on a memory card, an A2 micro sd card is recommen
 * Next, on a new install of Raspbian, run the following:
 
 ```bash
-curl https://matt.rayner.io/meeting-display/setup.sh | sh -
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/setup.sh | sh -
 ```
 
 Let the setup script prepare your environment, then restart when prompted.
