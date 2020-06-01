@@ -1,5 +1,13 @@
 mkdir -p ~/meeting-display
 
+echo "Setting up display configuration"
+sudo cat <<EOT >> /boot/config.txt
+lcd_rotate=2
+framebuffer_width=800
+framebuffer_height=444
+framebuffer_aspect=-1
+EOT
+
 echo "Get the latest packages and update"
 sudo apt-get update -y
 sudo apt-get upgrade -y
