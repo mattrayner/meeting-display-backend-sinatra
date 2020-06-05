@@ -27,6 +27,7 @@ sudo apt-get remove python-configparser
 sudo pip3 install docker-compose
 
 echo "Configuring chromium in kiosk mode"
+sudo apt-get install -y chromium-browser
 mkdir -p /home/pi/.config/autostart/
 cat <<EOT > /home/pi/.config/autostart/kiosk.desktop
 [Desktop Entry]
