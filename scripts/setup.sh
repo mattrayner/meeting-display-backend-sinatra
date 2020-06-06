@@ -13,10 +13,9 @@ echo "Get the latest packages and update"
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
-echo "Paste in your .ical URL, then press enter:"
-read -r ical_url
-echo "export ICAL_URL=$ical_url" >> ~/.bashrc
-source ~/.bashrc
+read -p "Paste in your .ical URL, then press enter:" ical_url </dev/tty
+echo "export ICAL_URL=$ical_url" >> /home/pi/.bashrc
+source /home/pi/.bashrc
 
 echo "Install Docker and Docker Compose"
 curl -sSL https://get.docker.com | sh
@@ -24,7 +23,7 @@ sudo usermod -aG docker pi
 sudo apt-get install -y libffi-dev libssl-dev
 sudo apt-get install -y python3 python3-pip
 sudo apt-get remove python-configparser
-sudo pip3 install docker-compose
+yes | sudo pip3 install docker-compose
 
 echo "Configuring chromium in kiosk mode"
 sudo apt-get install -y chromium-browser
@@ -86,6 +85,6 @@ sudo touch /var/spool/cron/crontabs/pi
 ( crontab -l | grep -v -F "/home/pi/meeting-display/cron/update.sh" ; echo "30 1 * * 0-5 /bin/sh /home/pi/meeting-display/cron/update.sh > /home/pi/meeting-display/logs/update.log 2>&1" ) | crontab -
 ( crontab -l | grep -v -F "/home/pi/meeting-display/cron/display_on_dim.sh" ; echo "0 7,20 * * 0-5 /bin/sh /home/pi/meeting-display/cron/display_on_dim.sh > /home/pi/meeting-display/logs/display_on_dim.log 2>&1" ) | crontab -
 ( crontab -l | grep -v -F "/home/pi/meeting-display/cron/display_on.sh" ; echo "30 7 * * 0-5 /bin/sh /home/pi/meeting-display/cron/display_on.sh > /home/pi/meeting-display/logs/display_on.log 2>&1" ) | crontab -
-( crontab -l | grep -v -F "/home/pi/meeting-display/cron/display_off.sh" ; echo "0 21 * * * /bin/sh /home/pi/meeting-display/cron/display_off.sh > /home/pi/meeting-display/logs/display_off  .log 2>&1" ) | crontab -
+( crontab -l | grep -v -F "/home/pi/meeting-display/cron/display_off.sh" ; echo "0 21 * * * /bin/sh /home/pi/meeting-display/cron/display_off.sh > /home/pi/meeting-display/logs/display_off.log 2>&1" ) | crontab -
 
 echo "Complete. Now restart with 'sudo reboot now'. Note that you should have SSH setup so that you can manage the pi after this."
