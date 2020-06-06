@@ -38,7 +38,7 @@ X-GNOME-Autostart-enabled=true
 EOT
 
 curl  https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/kiosk.sh --output /home/pi/meeting-display/kiosk.sh
-chmod +x ~/kiosk.sh
+chmod +x /home/pi/meeting-display/kiosk.sh
 
 echo "Configuring docker-compose"
 # Add the brightness and bl_power files into the docker file so we can manipulate the touch screen brightness.
@@ -60,26 +60,26 @@ sudo cat <<EOT >> /etc/xdg/lxsession/LXDE-pi/autostart
 EOT
 
 # Create cron scripts
-mkdir -p ~/meeting-display/cron/
+mkdir -p /home/pi/meeting-display/cron/
 
 # Allow us to turn the display off on a schedule
 curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_off.sh --output /home/pi/meeting-display/cron/display_off.sh
-chmod +x ~/meeting-display/cron/display_off.sh
+chmod +x /home/pi/meeting-display/cron/display_off.sh
 
 # Allow us to dim the display on a schedule
 curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_on_dim.sh --output /home/pi/meeting-display/cron/display_on_dim.sh
-chmod +x ~/meeting-display/cron/display_on_dim.sh
+chmod +x /home/pi/meeting-display/cron/display_on_dim.sh
 
 # Allow us to turn the display on on a schedule
 curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_on.sh --output /home/pi/meeting-display/cron/display_on.sh
-chmod +x ~/meeting-display/cron/display_on.sh
+chmod +x /home/pi/meeting-display/cron/display_on.sh
 
 # Allow us to automatically update the display on a schedule
 curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/update.sh --output /home/pi/meeting-display/cron/update.sh
-chmod +x ~/meeting-display/cron/update.sh
+chmod +x /home/pi/meeting-display/cron/update.sh
 
 
-mkdir -p ~/meeting-display/logs
+mkdir -p /home/pi/meeting-display/logs
 
 # Add CRON entries to do the above
 sudo touch /var/spool/cron/crontabs/pi
