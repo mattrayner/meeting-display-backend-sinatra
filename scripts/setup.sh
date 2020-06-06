@@ -14,7 +14,7 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 echo "Paste in your .ical URL, then press enter:"
-read -r -e ical_url
+read -r ical_url
 echo "export ICAL_URL=$ical_url" >> ~/.bashrc
 source ~/.bashrc
 
