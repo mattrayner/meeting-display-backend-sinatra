@@ -1,5 +1,5 @@
 #!/bin/bash
-mkdir -p ~/meeting-display
+mkdir -p /home/pi/meeting-display
 
 echo "Setting up display configuration"
 sudo tee -a /boot/config.txt > /dev/null <<EOT
@@ -14,7 +14,7 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 echo "Paste in your .ical URL, then press enter:"
-read ical_url
+read -r -e ical_url
 echo "export ICAL_URL=$ical_url" >> ~/.bashrc
 source ~/.bashrc
 
@@ -37,12 +37,12 @@ Exec=/home/pi/meeting-display/kiosk.sh
 X-GNOME-Autostart-enabled=true
 EOT
 
-curl  https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/kiosk.sh --output ~/meeting-display/kiosk.sh
+curl  https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/kiosk.sh --output /home/pi/meeting-display/kiosk.sh
 chmod +x ~/kiosk.sh
 
 echo "Configuring docker-compose"
 # Add the brightness and bl_power files into the docker file so we can manipulate the touch screen brightness.
-curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/docker-compose.meeting-display.yml --output ~/meeting-display/docker-compose.meeting-display.yml
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/docker-compose.meeting-display.yml --output /home/pi/meeting-display/docker-compose.meeting-display.yml
 
 echo "Set permissions to allow the display to change the brightness and backlight"
 sudo chmod 777 /sys/class/backlight/rpi_backlight/brightness
@@ -63,19 +63,19 @@ EOT
 mkdir -p ~/meeting-display/cron/
 
 # Allow us to turn the display off on a schedule
-curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_off.sh --output ~/meeting-display/cron/display_off.sh
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_off.sh --output /home/pi/meeting-display/cron/display_off.sh
 chmod +x ~/meeting-display/cron/display_off.sh
 
 # Allow us to dim the display on a schedule
-curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_on_dim.sh --output ~/meeting-display/cron/display_on_dim.sh
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_on_dim.sh --output /home/pi/meeting-display/cron/display_on_dim.sh
 chmod +x ~/meeting-display/cron/display_on_dim.sh
 
 # Allow us to turn the display on on a schedule
-curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_on.sh --output ~/meeting-display/cron/display_on.sh
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/display_on.sh --output /home/pi/meeting-display/cron/display_on.sh
 chmod +x ~/meeting-display/cron/display_on.sh
 
 # Allow us to automatically update the display on a schedule
-curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/update.sh --output ~/meeting-display/cron/update.sh
+curl https://raw.githubusercontent.com/mattrayner/meeting-display-backend-sinatra/master/scripts/cron/update.sh --output /home/pi/meeting-display/cron/update.sh
 chmod +x ~/meeting-display/cron/update.sh
 
 
@@ -83,9 +83,9 @@ mkdir -p ~/meeting-display/logs
 
 # Add CRON entries to do the above
 sudo touch /var/spool/cron/crontabs/pi
-( crontab -l | grep -v -F "/home/pi/meeting-display/cron/update.sh" ; echo "30 1 * * 0-5 /home/pi/meeting-display/cron/update.sh > /home/pi/meeting-display/logs/cron.log 2>&1" ) | crontab -
-( crontab -l | grep -v -F "/home/pi/display_on_dim.sh" ; echo "0 7,20 * * 0-5 /home/pi/display_on_dim.sh > /home/pi/cron.log 2>&1" ) | crontab -
-( crontab -l | grep -v -F "/home/pi/display_on.sh" ; echo "30 7 * * 0-5 /bin/sh /home/pi/display_on.sh > /home/pi/cron.log 2>&1" ) | crontab -
-( crontab -l | grep -v -F "/home/pi/display_off.sh" ; echo "0 21 * * * /bin/sh /home/pi/display_off.sh > /home/pi/cron.log 2>&1" ) | crontab -
+( crontab -l | grep -v -F "/home/pi/meeting-display/cron/update.sh" ; echo "30 1 * * 0-5 /bin/sh /home/pi/meeting-display/cron/update.sh > /home/pi/meeting-display/logs/update.log 2>&1" ) | crontab -
+( crontab -l | grep -v -F "/home/pi/meeting-display/cron/display_on_dim.sh" ; echo "0 7,20 * * 0-5 /bin/sh /home/pi/meeting-display/cron/display_on_dim.sh > /home/pi/meeting-display/logs/display_on_dim.log 2>&1" ) | crontab -
+( crontab -l | grep -v -F "/home/pi/meeting-display/cron/display_on.sh" ; echo "30 7 * * 0-5 /bin/sh /home/pi/meeting-display/cron/display_on.sh > /home/pi/meeting-display/logs/display_on.log 2>&1" ) | crontab -
+( crontab -l | grep -v -F "/home/pi/meeting-display/cron/display_off.sh" ; echo "0 21 * * * /bin/sh /home/pi/meeting-display/cron/display_off.sh > /home/pi/meeting-display/logs/display_off  .log 2>&1" ) | crontab -
 
 echo "Complete. Now restart with 'sudo reboot now'. Note that you should have SSH setup so that you can manage the pi after this."
