@@ -24,7 +24,7 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/pi/.config/chromium
 # NOTE: --check-fo-update-interval is set as a workaround. The raspbian chromium will often be older than the
 # main chromium branch. We update nightly so can we assured we are running the latest available, but sometimes
 # a pop up will appear asking you to download a new version.
-/usr/bin/chromium-browser --check-for-update-interval=604800 --no-default-browser-check --window-size=800,480 --kiosk --window-position=0,0 http://localhost:4567/index.html &
+/usr/bin/chromium-browser --check-for-update-interval=604800 --no-first-run --no-default-browser-check --window-size=800,480 --kiosk --window-position=0,0 http://localhost:4567/index.html &
 
 # Start the kiosk loop. This keystroke changes the Chromium tab
 # To have just anti-idle, use this line instead:
