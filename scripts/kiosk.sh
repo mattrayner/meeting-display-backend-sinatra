@@ -7,7 +7,7 @@ sudo chmod 777 /sys/class/backlight/rpi_backlight/brightness
 sudo chmod 777 /sys/class/backlight/rpi_backlight/bl_power
 
 # Launch the backend service
-docker-compose -f ~/docker-compose.meeting-display.yml up -d
+docker-compose -f /home/pi/meeting-display/docker-compose.meeting-display.yml up -d
 
 # Run this script in display 0 - the monitor
 export DISPLAY=:0
