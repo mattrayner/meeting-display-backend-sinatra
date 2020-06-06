@@ -14,8 +14,9 @@ sudo apt-get update -y
 sudo apt-get upgrade -y
 
 read -p "Paste in your .ical URL, then press enter: " ical_url </dev/tty
-echo "export ICAL_URL=\"$ical_url\"" >> /home/pi/.bashrc
-source /home/pi/.bashrc
+touch /home/pi/.profile
+echo "export ICAL_URL=\"$ical_url\"" >> /home/pi/.profile
+source /home/pi/.profile
 
 echo "Install Docker and Docker Compose"
 curl -sSL https://get.docker.com | sh
