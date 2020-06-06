@@ -13,7 +13,7 @@ echo "Get the latest packages and update"
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
-read -p "Paste in your .ical URL, then press enter:" ical_url </dev/tty
+read -p "Paste in your .ical URL, then press enter: " ical_url </dev/tty
 echo "export ICAL_URL=$ical_url" >> /home/pi/.bashrc
 source /home/pi/.bashrc
 
@@ -23,7 +23,7 @@ sudo usermod -aG docker pi
 sudo apt-get install -y libffi-dev libssl-dev
 sudo apt-get install -y python3 python3-pip
 sudo apt-get remove python-configparser
-yes | sudo pip3 install docker-compose
+sudo pip3 install docker-compose
 
 echo "Configuring chromium in kiosk mode"
 sudo apt-get install -y chromium-browser
