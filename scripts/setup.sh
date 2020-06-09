@@ -24,7 +24,7 @@ sudo usermod -aG docker pi
 sudo apt-get install -y libffi-dev libssl-dev
 sudo apt-get install -y python3 python3-pip
 sudo apt autoremove -y
-sudo apt-get remove python-configparser
+sudo apt-get remove -y python-configparser
 sudo pip3 install docker-compose
 
 echo "Configuring chromium in kiosk mode"
